@@ -1,0 +1,81 @@
+
+<div *ngIf="contact" class="row zoom">
+  <div class="col-md-12 title">
+    <h2 *ngIf="contact._id">Contact Details</h2>
+    <h2 *ngIf="!contact._id" [style.display]="!show?'none':'inherit'">New Contact</h2>
+  </div>
+</div>
+
+<div *ngIf="contact" class="row zoom">
+  <form class="col-md-12" #contactForm="ngForm">
+    <div class="col-md-offset-1 back" *ngIf="show">
+    <div class="form-group" *ngIf="show">
+        <label for="contact-url">Contact Picture</label>
+        <input type='file' name="contact-url" [(ngModel)]="contact.url" (change)="handleFileSelect($event)"/>
+    </div>
+    <div class="form-group" *ngIf="show">
+      <label for="contact-name">Name</label>
+      <input class="form-control" id="name" required name="contact-name" [(ngModel)]="contact.name" placeholder="Name" #name="ngModel"/>
+      <div *ngIf="name.errors && (name.dirty || name.touched)" class="alert alert-danger">
+        <div [hidden]="!name.errors.required">
+          Name is required!
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="show">
+      <label for="contact-email">Email</label>
+      <input type="email" class="form-control" id="email" name="contact-email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [(ngModel)]="contact.email" placeholder="support@mlab.com" #email="ngModel"/>
+      <div *ngIf="email.errors && (email.dirty || email.touched)" class="alert alert-danger">
+        <div [hidden]="!email.errors.pattern">
+          Must be a valid Email!
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="show">
+      <label for="contact-phone-mobile">Mobile</label>
+      <input type="tel" class="form-control" id="mobile" required name="contact-phone-mobile" pattern="[0-9]{10}" [(ngModel)]="contact.phone.mobile" placeholder="1234567890" #mobile="ngModel"/>
+      <div *ngIf="mobile.errors && (mobile.dirty || mobile.touched)" class="alert alert-danger">
+        <div [hidden]="!mobile.errors.required">
+          Phone Number is required!
+        </div>
+        <div [hidden]="!mobile.errors.pattern">
+          Must be a valid number!
+        </div>
+      </div>
+    </div>
+    <div class="form-group" *ngIf="show">
+      <label for="contact-phone-work">Work</label>
+      <input type="tel" class="form-control" id="work" name="contact-phone-work" pattern="[0-9]{10}" [(ngModel)]="contact.phone.work" placeholder="0123456789" #work="ngModel"/>
+        <div *ngIf="work.errors && (work.dirty || work.touched)" class="alert alert-danger">
+        <div [hidden]="!work.errors.pattern">
+          Must be a valid number!
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" *ngIf="!contact._id" [disabled]="!contactForm.form.valid" (click)="createContact(contact); show=false" [style.display]="!show?'none':'inherit'"><span class="glyphicon glyphicon-pencil"></span> Create</button>
+    </div>
+    
+    <div class="col-md-offset-1 back" *ngIf="contact.name && !show">
+    <!-- contact-id without the input boxes -->
+    <div class="form-group" *ngIf="!show">  
+        <label class="form-group font-name">{{contact.name}}</label>
+    </div>
+    <div class="form-group" *ngIf="!show">
+        <img class="form-group" src="{{contact.url}}" height="200"> <br/>  
+    </div>
+    <div class="form-group" *ngIf="!show">
+        <label class="form-group font-body" *ngIf="contact.email">E-mail: {{contact.email}}</label>
+    </div>
+    <div class="form-group" *ngIf="!show">
+        <label class="form-group font-body" *ngIf="contact.phone.mobile">Phone (M): {{contact.phone.mobile}}</label>
+    </div>
+    <div class="form-group" *ngIf="!show">
+        <label class="form-group font-body" name="contact-phone-work" *ngIf="contact.phone.work">Phone (W): {{contact.phone.work}}</label>
+    </div>
+    </div>
+    <div class="col-md-offset-1 back2" *ngIf="contact._id">
+        <button class="button btn-primary" *ngIf="contact._id" [disabled]="!contactForm.form.valid" (click)="updateContact(contact); show=!show">Update</button>
+        <button class="button btn-danger" *ngIf="contact._id" (click)="deleteContact(contact._id)">Delete</button>
+    </div>
+  </form>
+</div>

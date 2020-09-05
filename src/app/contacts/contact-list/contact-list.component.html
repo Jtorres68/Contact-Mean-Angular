@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-5">
+    <h2 class="con">Contacts</h2>
+    <ul class="list-group">
+      <li class="list-group-item"
+        *ngFor="let contact of contacts"
+        (click)="selectContact(contact)"
+        [class.active]="contact === selectedContact">
+        <!--hopefully shows a pic beside name-->
+        <!--<img src="{{contact.url}}" width="30px" height="30px"/> -->
+        {{contact.name}}
+      </li>
+    </ul>
+    <button class="new-button btn-warning new" (click)="createNewContact(); show=!show">New</button>
+  </div>
+  <div class="col-md-5 col-md-offset-2">
+    <contact-details
+      [show]="show"
+      [contact]="selectedContact"
+      [createHandler]="addContact"
+      [updateHandler]="updateContact"
+      [deleteHandler]="deleteContact">
+    </contact-details>
+  </div>
+</div>
